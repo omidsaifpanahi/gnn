@@ -1,0 +1,13 @@
+logs
+data
+.vscode
+api/gnn/mlruns
+api/gnn/data/images
+api/gnn/data/processed
+.env
+*.pth
+*.db
+__pycache__/
+*.pyc
+static/images/
+.DS_Store

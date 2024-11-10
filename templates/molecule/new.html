@@ -1,0 +1,87 @@
+{% extends 'baseDashboard.html' %}
+
+{% block content %}
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <div class="row g-3">
+           <div class="col-lg-6 col-md-12 card">
+               <div class="card-body">
+                   <div class="row">
+                        <div class="col-12 mt-2 mb-4">
+                          <div class="row">
+                              <div class="col-4">
+                                 انتخاب نوع ورودی
+                              </div>
+                              <div class="col-4">
+                                 <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="inputType" id="smilesType" value="smiles" checked>
+                                      <label class="form-check-label" for="smilesType">رشته SMILES</label>
+                                  </div>
+                              </div>
+                              <div class="col-4">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="inputType" id="molFileType" value="file">
+                                      <label class="form-check-label" for="molFileType">فایل</label>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                        <hr class="mb-4">
+                           <div class="col-12 mb-4">
+                              <label for="smilesInput" class="form-label">رشته SMILES</label>
+                              <input type="text" class="form-control form-control-lg" id="smilesInput" name="smiles">
+                              <div class="invalid-feedback">
+                                يرجى إدخال عنوان الشحن الخاص بك.
+                              </div>
+                          </div>
+                        <div class="col-12 mb-4">
+                              <label for="smilesInput" class="form-label">رشته SMILES</label>
+                              <input type="text" class="form-control form-control-lg" id="smilesInput" name="smiles">
+                              <div class="invalid-feedback">
+                                يرجى إدخال عنوان الشحن الخاص بك.
+                              </div>
+                          </div>
+
+                        <div class="col-12 mb-4">
+                            <label for="molFile" class="form-label">فایل mol</label>
+                            <input type="file" id="molFile" name="molFile" accept=".mol" class="form-control form-control-lg">
+                            <div class="invalid-feedback">
+                            يرجى إدخال عنوان الشحن الخاص بك.
+                            </div>
+                          </div>
+
+                        <div class="col-8 mb-2">
+                           <button class="btn btn-primary btn-lg" type="submit">ذخیره و دریافت پیش بینی</button>
+                        </div>
+                   </div>
+               </div>
+           </div>
+
+             <div class="col-lg-6 col-md-12 card">
+               <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 mt-3 mb-4">
+                        نتیجه
+                    </div>
+                   <hr class="mb-5">
+                    <div class="col-12 mb-4">
+                        {% if prediction %}
+                            <h2>پیش‌بینی: {{ prediction }}</h2>
+
+                            {% if molecule_image %}
+                                <h3>تصویر مولکول:</h3>
+                                <img src="{{ url_for('static', filename='images/molecule.png') }}" alt="Molecule Image">
+                            {% endif %}
+
+                            <h3>جزیئات مدل:</h3>
+                            <p>میزان اطمینان: 81%</p>
+                            <p>ورژن مدل: 1.0.1</p>
+                            <p>نام مدل: Graph Transformer Network</p>
+                            <p>تست ROC: 0.84</p>
+                        {% endif %}
+                    </div>
+                  </div>
+               </div>
+           </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,51 @@
+gnn_project_main/
+├── api/
+│   ├── controllers/
+│   │   ├── molecule_controller.py
+│   │   └── auth_controller.py
+│   │   └── user_controller.py
+│   │   └── post_controller.py
+│   ├── gnn/
+│   │   ├── data/
+│   │   │   ├── images/
+│   │   │   ├── processed/
+│   │   │   ├── raw/
+│   │   ├── mlruns/
+│   │   ├── checkpoint.pth
+│   │   ├── config.py
+│   │   ├── dataset.py
+│   │   ├── dataset_featurizer.py
+│   │   ├── mlflow.py
+│   │   ├── model.py
+│   │   ├── oversample_data.py
+│   │   ├── train.py
+│   │   ├── utils.py
+│   ├── migrations/
+│   ├── middlewares/
+│   │   ├── auth_user.py
+│   │   ├── auth_admin.py
+│   │   ├── headers.py
+│   ├── models/
+│   │   ├── user.py
+│   │   └── post.py
+│   │   └── molecule.py
+│   ├── system/
+│   │   ├── add_super_admin.py
+│   │   ├── base_model_db.py
+│   ├── utils/
+│   │   └── helper.py
+├── templates/
+│   ├── admin_dashboard/
+│   ├── user_dashboard/
+│   └── shared/
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── static/
+├── .production.env
+├── .development.env
+├── requirements.txt
+├──.gitignore
+├── run.py
+└── README.md
