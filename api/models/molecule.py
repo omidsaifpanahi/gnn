@@ -7,8 +7,9 @@ class MoleculeModel(BaseModel):
 
     def get_columns(self):
         return {
+            'input_type': 'enum("file","smiles") NOT NULL',
             'name': 'varchar(120) UNIQUE NOT NULL',
             'smiles' : 'text DEFAULT NULL',
-            'is_mol_file': 'tinyint(1) UNSIGNED NOT NULL DEFAULT 0',
-            'user_id': 'int UNSIGNED NOT NULL DEFAULT 0'
+            'user_id': 'int UNSIGNED NOT NULL DEFAULT 0',
+            'prediction' : 'tinyint(1) UNSIGNED NOT NULL DEFAULT 0',
         }

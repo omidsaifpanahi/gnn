@@ -1,8 +1,6 @@
 {% include 'shared/head.html' %}
-{% block extra_css %}
-    <link rel="stylesheet" href="/static/css/dashboard.css">
-{% endblock %}
-  <body>
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <body class="mb-5">
   {% include 'shared/colorModes.html' %}
   {% include 'shared/icons.html' %}
 <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
@@ -18,8 +16,8 @@
 </header>
 
 <div class="container-fluid">
-  <div class="row">
-    <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
+  <div class="row flex-nowrap">
+    <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary vh-100">
       <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="sidebarMenuLabel">Company name</h5>
@@ -30,25 +28,19 @@
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/dashboard">
                 <svg class="bi"><use xlink:href="#house-fill"/></svg>
-                خانه
+                آمار
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="/list-molecules">
+              <a class="nav-link d-flex align-items-center gap-2" href="/molecule/view-list">
                 <svg class="bi"><use xlink:href="#file-earmark-text"/></svg>
                 لیست مولکول ها
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="/new-molecule">
+              <a class="nav-link d-flex align-items-center gap-2" href="/molecule/view-add">
                 <svg class="bi"><use xlink:href="#file-earmark"/></svg>
                  مولکول جدید
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="#">
-                <svg class="bi"><use xlink:href="#graph-up"/></svg>
-                آمار
               </a>
             </li>
           </ul>
@@ -64,7 +56,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="/logout">
+              <a class="nav-link d-flex align-items-center gap-2" href="/auth/logout">
                 <svg class="bi"><use xlink:href="#door-closed"/></svg>
                 خروج
               </a>

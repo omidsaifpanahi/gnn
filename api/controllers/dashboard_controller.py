@@ -5,4 +5,4 @@ dashboard_bp = Blueprint('dashboard', __name__)
 @dashboard_bp.route("/")
 @auth_user
 def dashboard():
-    return render_template("dashboard.html", username=session['username'], title='داشبرد')
+    return render_template("dashboard.html", username=session['username'], title='آمار')

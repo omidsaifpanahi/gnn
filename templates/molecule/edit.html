@@ -1,0 +1,82 @@
+{% block extra_css %}
+
+{% endblock %}
+
+{% extends 'shared/baseDashboard.html' %}
+
+{% block content %}
+    <form id="uploadForm"  enctype="multipart/form-data">
+        <div class="row g-3">
+           <div class="col-lg-12 col-md-12 card">
+               <div class="card-body">
+
+                   <div class="row">                
+                        <label for="name" class="form-label col-md-3 col-lg-1">نام</label>
+                        <div class="col-md-6 col-lg-8">
+                            <input type="text" class="form-control form-control-lg " id="name" value="{{data['name']}}">
+                        </div>                
+                        <button class="btn btn-primary btn-lg col-md-3 col-lg-3" type="submit">ذخیره تغییر نام مولکول</button>
+                   </div>
+
+                   <hr class="mb-4">
+
+                   {% if data['input_type']=='smiles' %}
+                    <div class="col-12 mb-4">
+                        <label for="smilesInput" class="form-label">رشته SMILES</label>
+                        <input type="text" class="form-control form-control-lg text-left" id="smilesInput" disabled value="{{data['smiles']}}">        
+                    </div>
+                    {% endif %}
+
+                    {% if data['input_type']=='file' %}
+                    <div class="col-12 mb-4">    
+                        <p>
+                            <a href="/static/mols/{{data['id']}}.mol">دانلود فایل mol</a>
+                        </p>   
+                    </div>
+                    {% endif %}
+
+                    <hr class="mb-4">
+
+                    <div class="row">
+                        <div class="col-12 mt-3 mb-4">
+                            نتیجه
+                        </div>        
+                        <div class="col-12 mb-4">
+                            <table class="table table-striped" >
+                                <tr>
+                                    <td>HIV را مهار می کند؟ </td>
+                                    <td>{{ 'بله' if data['prediction'] == 1 else 'خیر' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-success">تصویر مولکول</td>
+                                    <td>
+                                        <img  src="/static/images/{{data['id']}}.png" alt="Molecule Image">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger">جزیئات مدل</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-success">میزان اطمینان</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger">ورژن مدل</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-success">نام مدل</td>
+                                    <td>4</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+               </div>
+           </div>
+        </div>
+    </form>
+{% endblock %}
+{% block extra_js %}
+    <script src="/static/js/newMolecule.js"></script>
+{% endblock %}

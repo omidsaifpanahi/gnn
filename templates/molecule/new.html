@@ -1,7 +1,11 @@
-{% extends 'baseDashboard.html' %}
+{% block extra_css %}
+
+{% endblock %}
+
+{% extends 'shared/baseDashboard.html' %}
 
 {% block content %}
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+    <form id="uploadForm"  enctype="multipart/form-data">
         <div class="row g-3">
            <div class="col-lg-6 col-md-12 card">
                <div class="card-body">
@@ -13,13 +17,13 @@
                               </div>
                               <div class="col-4">
                                  <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="inputType" id="smilesType" value="smiles" checked>
+                                      <input class="form-check-input" type="radio" name="input_type" id="smilesType" value="smiles" checked>
                                       <label class="form-check-label" for="smilesType">رشته SMILES</label>
                                   </div>
                               </div>
                               <div class="col-4">
                                   <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="inputType" id="molFileType" value="file">
+                                      <input class="form-check-input" type="radio" name="input_type" id="molFileType" value="file">
                                       <label class="form-check-label" for="molFileType">فایل</label>
                                   </div>
                               </div>
@@ -27,15 +31,15 @@
                       </div>
                         <hr class="mb-4">
                            <div class="col-12 mb-4">
-                              <label for="smilesInput" class="form-label">رشته SMILES</label>
-                              <input type="text" class="form-control form-control-lg" id="smilesInput" name="smiles">
+                              <label for="name" class="form-label">نام</label>
+                              <input type="text" class="form-control form-control-lg" id="name">
                               <div class="invalid-feedback">
                                 يرجى إدخال عنوان الشحن الخاص بك.
                               </div>
                           </div>
                         <div class="col-12 mb-4">
                               <label for="smilesInput" class="form-label">رشته SMILES</label>
-                              <input type="text" class="form-control form-control-lg" id="smilesInput" name="smiles">
+                              <input type="text" class="form-control form-control-lg text-left" id="smilesInput">
                               <div class="invalid-feedback">
                                 يرجى إدخال عنوان الشحن الخاص بك.
                               </div>
@@ -43,11 +47,11 @@
 
                         <div class="col-12 mb-4">
                             <label for="molFile" class="form-label">فایل mol</label>
-                            <input type="file" id="molFile" name="molFile" accept=".mol" class="form-control form-control-lg">
+                            <input type="file" id="molFile" accept=".mol" class="form-control form-control-lg">
                             <div class="invalid-feedback">
                             يرجى إدخال عنوان الشحن الخاص بك.
                             </div>
-                          </div>
+                        </div>
 
                         <div class="col-8 mb-2">
                            <button class="btn btn-primary btn-lg" type="submit">ذخیره و دریافت پیش بینی</button>
@@ -56,32 +60,50 @@
                </div>
            </div>
 
-             <div class="col-lg-6 col-md-12 card">
+             <div class="col-lg-6 col-md-12 card d-none" id="result">
                <div class="card-body">
                   <div class="row">
                     <div class="col-12 mt-3 mb-4">
-                        نتیجه
+                        نتیجه پیش بینی
                     </div>
                    <hr class="mb-5">
                     <div class="col-12 mb-4">
-                        {% if prediction %}
-                            <h2>پیش‌بینی: {{ prediction }}</h2>
-
-                            {% if molecule_image %}
-                                <h3>تصویر مولکول:</h3>
-                                <img src="{{ url_for('static', filename='images/molecule.png') }}" alt="Molecule Image">
-                            {% endif %}
-
-                            <h3>جزیئات مدل:</h3>
-                            <p>میزان اطمینان: 81%</p>
-                            <p>ورژن مدل: 1.0.1</p>
-                            <p>نام مدل: Graph Transformer Network</p>
-                            <p>تست ROC: 0.84</p>
-                        {% endif %}
+                        <table class="table table-striped" >
+                            <tr>
+                                <td>HIV را مهار می کند؟ </td>
+                                <td id="result-prediction"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-success">تصویر مولکول</td>
+                                <td>
+                                    <img id="result-image" src="" alt="Molecule Image">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-danger">جزیئات مدل</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td class="text-success">میزان اطمینان</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="text-danger">ورژن مدل</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td class="text-success">نام مدل</td>
+                                <td>4</td>
+                            </tr>
+                        </table>
                     </div>
                   </div>
                </div>
            </div>
         </div>
     </form>
+{% endblock %}
+{% block extra_js %}
+    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js "></script>
+    <script src="/static/js/newMolecule.js"></script>
 {% endblock %}

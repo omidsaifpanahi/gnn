@@ -39,9 +39,9 @@ class BaseModel:
             self.c.execute(query, tuple(data.values()))
             self.conn.commit()
             return {'success': True, 'id': self.c.lastrowid}
-        except mysql.connector.IntegrityError:
+        except mariadb.IntegrityError:
             unique_value = data.get(unique_field)
-            return {'success': False, 'msg': f"خطا: {unique_field} '{unique_value}' قبلاً ثبت شده است."}
+            return {'success': False, 'msg': f"خطا: '{unique_value}' قبلاً ثبت شده است."}
 
     def read(self, conditions):
         where_clause = ' AND '.join([f"{col} = %s" for col in conditions.keys()])
@@ -61,14 +61,23 @@ class BaseModel:
         return self.c.rowcount
 
     def delete(self, conditions):
-        where_clause = ' AND '.join([f"{col} = %s" for col in conditions.keys()])
-        query = f"DELETE FROM {self.table_name} WHERE {where_clause}"
-        params = tuple(conditions.values())
-        self.c.execute(query, params)
-        self.conn.commit()
-        return self.c.rowcount
+        if not conditions:
+            raise ValueError("شرایط حذف نمی‌تواند خالی باشد.")
 
-    def fetch_all(self,  draw: int = 1,page: int = 1, limit: int = 10, conditions: dict = None, order: str = None) -> dict:
+        where_clause = ' AND '.join([f"{col} = %s" for col in conditions.keys()])
+        query = f"UPDATE {self.table_name} SET is_delete = 1 WHERE {where_clause}"
+
+        try:
+            self.c.execute(query, tuple(conditions.values()))
+            self.conn.commit()
+            return self.c.rowcount
+        except mariadb.Error as e:
+            self.conn.rollback()
+            raise RuntimeError(f"خطا در حذف رکورد: {str(e)}")
+    
+
+    def fetch_all(self, draw: int = 1, page: int = 1, limit: int = 10, conditions: dict = None,
+                  order: str = None, is_test: bool = False) -> dict:
         offset = (page - 1) * limit
 
         self.c.execute(f"SELECT COUNT(*) AS total FROM {self.table_name}")
@@ -77,26 +86,37 @@ class BaseModel:
         query = f"SELECT * FROM {self.table_name}"
         params = []
 
+
         if conditions:
-            where_clause = ' AND '.join([f"{col} = %s" for col in conditions.keys()])
+            where_clause = ' AND '.join([f"{col} like %s" for col in conditions.keys()])
             query += f" WHERE {where_clause}"
             params.extend(conditions.values())
+            filter_query = f"SELECT COUNT(*) AS total_filtered FROM {self.table_name} WHERE {where_clause}"
+        else:
+            filter_query = f"SELECT COUNT(*) AS total_filtered FROM {self.table_name}"
 
-        filter_query = f"SELECT COUNT(*) AS total_filtered FROM {self.table_name} WHERE {where_clause}" if conditions else f"SELECT COUNT(*) AS total_filtered FROM {self.table_name}"
-        self.c.execute(filter_query, tuple(params))
+        self.c.execute(filter_query, tuple(params) if conditions else ())
         records_filtered = self.c.fetchone()['total_filtered']
 
         if order:
-            query += f" ORDER BY {order}"
+            if isinstance(order, tuple) and len(order) == 2:
+                order_clause = f"{order[0]} {order[1]}"
+            else:
+                order_clause = order
+            query += f" ORDER BY {order_clause}"
 
         query += " LIMIT %s OFFSET %s"
         params.extend([limit, offset])
+
+        if is_test:
+            print("SQL Query:", query)
+            print("Parameters:", params)
 
         self.c.execute(query, tuple(params))
         rows = self.c.fetchall()
 
         return {
-            'draw':draw,
+            'draw': draw,
             'data': rows,
             'recordsTotal': records_total,
             'recordsFiltered': records_filtered
