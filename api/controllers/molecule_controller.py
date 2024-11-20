@@ -36,7 +36,7 @@ def list_molecules():
     limit = length
 
     molecule_model = MoleculeModel()
-    result = molecule_model.fetch_all(draw=draw,page=page, limit=limit, conditions=conditions, order=(order_column, order_dir),is_test=True)
+    result = molecule_model.fetch_all(draw=draw,page=page, limit=limit, conditions=conditions, order=(order_column, order_dir),is_test=False)
 
     for row in result['data']:
         if 'created_date' in row and row['created_date']:
