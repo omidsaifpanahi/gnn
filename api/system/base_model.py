@@ -80,7 +80,7 @@ class BaseModel:
                   order: str = None, is_test: bool = False) -> dict:
         offset = (page - 1) * limit
 
-        self.c.execute(f"SELECT COUNT(*) AS total FROM {self.table_name}")
+        self.c.execute(f"SELECT COUNT(*) AS total FROM {self.table_name} where is_delete=0")
         records_total = self.c.fetchone()['total']
 
         query = f"SELECT * FROM {self.table_name}"
